@@ -25,7 +25,11 @@ public class Register {
     @Enumerated(EnumType.STRING)
     private Flux flux;
 
-    private Calendar date;
+    private Calendar creationDate;
+    
+    private Calendar effectiveDate;
+
+    private boolean effective;
 
     private String tag;
 
@@ -33,6 +37,10 @@ public class Register {
 
     public void updateRecurrent(){
         this.setRecurrent(!this.isRecurrent());
+    }
+
+    public void updateEffective(){
+        this.setEffective(!this.isEffective());
     }
 
 }
