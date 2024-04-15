@@ -1,5 +1,6 @@
 package com.jorder.wallet.controller;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,16 @@ public class RegisterController {
         if (registerEdited == null)
             ResponseEntity.notFound().build();
         return ResponseEntity.ok(registerEdited);
+    }
+
+    @PutMapping("/update-effective-date/{id}")
+    public ResponseEntity<String> updateEffectiveDate(@PathVariable Long id, @RequestBody GregorianCalendar effectiveDate) {
+        boolean result = registerService.updateEffectiveDate(id, effectiveDate); 
+        if (result) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        } 
     }
 
 }

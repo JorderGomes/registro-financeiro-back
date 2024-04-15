@@ -1,6 +1,7 @@
 package com.jorder.wallet.model;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -39,8 +40,9 @@ public class Register {
         this.setRecurrent(!this.isRecurrent());
     }
 
-    public void updateEffective(){
-        this.setEffective(!this.isEffective());
+    public void updateEffectiveDate(GregorianCalendar effectiveDate){
+        this.setEffectiveDate(effectiveDate);
+        this.setEffective(true);
     }
 
 }
