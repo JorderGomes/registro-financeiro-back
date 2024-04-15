@@ -1,6 +1,7 @@
 package com.jorder.wallet.service;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,11 +43,22 @@ public class RegisterService {
         return register;
     }
 
+
     public ResponseEntity<Void> deleteRegister(Long id) {
         if (!registerRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         registerRepository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    public boolean updateEffectiveDate(Long id, GregorianCalendar effectiveDate) {
+        if (!registerRepository.existsById(id)) {
+            return false;
+        }
+        Register register = registerRepository.findById(id).get();
+        register.updateEffectiveDate(effectiveDate);
+        registerRepository.save(register);
+        return true;
     }
 }
