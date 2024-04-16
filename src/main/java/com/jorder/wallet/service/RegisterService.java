@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.jorder.wallet.model.Flux;
 import com.jorder.wallet.model.Register;
 import com.jorder.wallet.repository.RegisterRepository;
 
@@ -31,6 +32,7 @@ public class RegisterService {
     public Register createRegister(Register register) {
         register.setCreationDate(Calendar.getInstance());
         register.setEffective(false);
+        register = this.setValueSign(register);
         return registerRepository.save(register);
     }
 
@@ -39,6 +41,7 @@ public class RegisterService {
             return null;
         }
         register.setId(id);
+        register = this.setValueSign(register);
         register = registerRepository.save(register);
         return register;
     }
@@ -61,4 +64,12 @@ public class RegisterService {
         registerRepository.save(register);
         return true;
     }
+
+    public Register setValueSign(Register register){
+        if (register.getFlux().equals(Flux.GASTO)) {
+            register.setValue(register.getValue() * -1);
+        }
+        return register;
+    }
+
 }
