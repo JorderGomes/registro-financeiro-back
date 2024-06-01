@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jorder.wallet.model.dto.MonthBalanceDto;
-import com.jorder.wallet.repository.RegisterRepository;
+import com.jorder.wallet.repository.TransactionRepository;
 
 @Service
 public class MetricsService {
 
     @Autowired
-    private RegisterRepository registerRepository;
+    private TransactionRepository registerRepository;
 
     public MonthBalanceDto calcMonthBalance(String month) {
 
