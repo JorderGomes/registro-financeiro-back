@@ -1,7 +1,7 @@
 package com.jorder.wallet.model;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+// import java.util.GregorianCalendar;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Register {
+public class Transaction {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,22 +27,7 @@ public class Register {
     private Flux flux;
 
     private Calendar creationDate;
-    
-    private Calendar effectiveDate;
-
-    private boolean effective;
 
     private String tag;
-
-    private boolean recurrent;
-
-    public void updateRecurrent(){
-        this.setRecurrent(!this.isRecurrent());
-    }
-
-    public void updateEffectiveDate(GregorianCalendar effectiveDate){
-        this.setEffectiveDate(effectiveDate);
-        this.setEffective(true);
-    }
 
 }
