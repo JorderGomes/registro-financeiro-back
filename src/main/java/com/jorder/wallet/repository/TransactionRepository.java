@@ -10,15 +10,15 @@ import com.jorder.wallet.model.Transaction;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     
-    @Query(value = "select COALESCE(sum(value), 0) FROM register WHERE strftime('%m', datetime(effective_date / 1000, 'unixepoch')) = :month and effective = 1;", nativeQuery = true)
+    @Query(value = "select COALESCE(sum(value), 0) FROM transactions WHERE strftime('%m', datetime(creation_date / 1000, 'unixepoch')) = :month ;", nativeQuery = true)
     public float getMonthlyGeneralBalance(String month);
 
-    @Query(value = "select COALESCE(sum(value), 0) FROM register WHERE strftime('%m', datetime(effective_date / 1000, 'unixepoch')) = :month and flux = 'GASTO' and effective = 1;", nativeQuery = true)
+    @Query(value = "select COALESCE(sum(value), 0) FROM transactions WHERE strftime('%m', datetime(creation_date / 1000, 'unixepoch')) = :month and flux = 'GASTO';", nativeQuery = true)
     public float getMonthlySpentBalance(String month);
 
-    @Query(value = "select COALESCE(sum(value), 0) FROM register WHERE strftime('%m', datetime(effective_date / 1000, 'unixepoch')) = :month and flux = 'RENDA' and effective = 1;", nativeQuery = true)
+    @Query(value = "select COALESCE(sum(value), 0) FROM transactions WHERE strftime('%m', datetime(creation_date / 1000, 'unixepoch')) = :month and flux = 'RENDA';", nativeQuery = true)
     public float getMonthlyIncomeBalance(String month);
 
-    @Query(value = "select description, COALESCE(sum(value), 0) as spent from register WHERE flux = 'GASTO' group by tag order by spent ASC;", nativeQuery = true)
+    @Query(value = "select description, COALESCE(sum(value), 0) as spent from transactions WHERE flux = 'GASTO' group by tag order by spent DESC;", nativeQuery = true)
     public List<Map<String, Float>> getCostsByTag();
 }
