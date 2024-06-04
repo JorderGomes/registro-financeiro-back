@@ -21,4 +21,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query(value = "select description, COALESCE(sum(value), 0) as spent from transactions WHERE flux = 'GASTO' group by tag order by spent DESC;", nativeQuery = true)
     public List<Map<String, Float>> getCostsByTag();
+
+    @Query(value = "select strftime('%Y-%m', datetime(creation_date / 1000, 'unixepoch')) AS month, SUM(CASE WHEN flux = 'GASTO' THEN value ELSE 0 END) AS cost from transactions GROUP BY strftime('%Y-%m', datetime(creation_date / 1000, 'unixepoch'));", nativeQuery = true)
+    public List<Map<String, Float>> getCostsByMonths();
+
+    @Query(value = "SELECT * from  transactions where flux = 'GASTO' and strftime('%Y-%m', datetime(creation_date / 1000, 'unixepoch')) = :year_month ORDER BY value;", nativeQuery = true)
+    public List<Transaction> getCostsExpensives(String year_month);
+
+    @Query(value = "SELECT SUM(CASE WHEN value < 0 THEN -value ELSE value END) AS total, SUM(CASE WHEN value > 0 THEN value ELSE 0 END) AS percentIncome, SUM(CASE WHEN value < 0 THEN value ELSE 0 END) AS percentCosts FROM  transactions where strftime('%Y-%m', datetime(creation_date / 1000, 'unixepoch')) = :year_month ;", nativeQuery = true)
+    public Object[][] getPercentualIncomeCosts(String year_month);
 }
