@@ -6,7 +6,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jorder.wallet.model.Transaction;
+import com.jorder.wallet.model.dto.GenericResponseDto;
 import com.jorder.wallet.model.dto.MonthBalanceDto;
+import com.jorder.wallet.model.dto.PercentualIncomeCostsDto;
 import com.jorder.wallet.repository.TransactionRepository;
 
 @Service
@@ -29,8 +32,41 @@ public class MetricsService {
         .build();
     }
 
-    public List<Map<String, Float>> calcCostsByTag(){
-        return registerRepository.getCostsByTag();
+    public GenericResponseDto<List<Map<String, Float>>> calcCostsByTag(){
+        var data = registerRepository.getCostsByTag();
+        GenericResponseDto<List<Map<String, Float>>> responseTag = new GenericResponseDto("tag", data);
+        return responseTag;
+    }
+
+    public List<Transaction> getCostsExpensives(String year_month) {
+        return this.registerRepository.getCostsExpensives(year_month);
+    }
+
+    public PercentualIncomeCostsDto getPercentualIncomeCosts(String year_month) {
+        Object[][] result = this.registerRepository.getPercentualIncomeCosts(year_month);
+
+        if (result != null) {
+            Float total = result[0][0] != null ? ((Number) result[0][0]).floatValue() : null;
+            Float income = result[0][1] != null ? ((Number) result[0][1]).floatValue() : null;
+            Float costs = result[0][2] != null ? ((Number) result[0][2]).floatValue() : null;
+
+            Float percentualIncome = Float.parseFloat(
+                String.format("%.2f", (100 * income) / total).replace(",", ".")
+                );
+            Float percentualCosts =  Float.parseFloat(
+                String.format("%.2f", ((100 * costs) / total) * -1).replace(",", ".")
+                );
+
+            return new PercentualIncomeCostsDto(percentualIncome, percentualCosts);
+        }
+        return new PercentualIncomeCostsDto(0.0f, 0.0f);
+    }
+
+    public GenericResponseDto<List<Map<String, Float>>> getCostsByMonth(){
+        var data = this.registerRepository.getCostsByMonths();
+        GenericResponseDto<List<Map<String, Float>>> responseMonth = 
+            new GenericResponseDto("month", data);
+        return responseMonth;
     }
 
 }
