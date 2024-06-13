@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jorder.wallet.model.Transaction;
+import com.jorder.wallet.model.dto.GenericResponseDto;
 import com.jorder.wallet.model.dto.MonthBalanceDto;
 import com.jorder.wallet.model.dto.PercentualIncomeCostsDto;
 import com.jorder.wallet.repository.TransactionRepository;
@@ -31,8 +32,10 @@ public class MetricsService {
         .build();
     }
 
-    public List<Map<String, Float>> calcCostsByTag(){
-        return registerRepository.getCostsByTag();
+    public GenericResponseDto<List<Map<String, Float>>> calcCostsByTag(){
+        var data = registerRepository.getCostsByTag();
+        GenericResponseDto<List<Map<String, Float>>> responseTag = new GenericResponseDto("tag", data);
+        return responseTag;
     }
 
     public List<Transaction> getCostsExpensives(String year_month) {
@@ -59,8 +62,11 @@ public class MetricsService {
         return new PercentualIncomeCostsDto(0.0f, 0.0f);
     }
 
-    public List<Map<String, Float>> getCostsByMonth(){
-        return this.registerRepository.getCostsByMonths();
+    public GenericResponseDto<List<Map<String, Float>>> getCostsByMonth(){
+        var data = this.registerRepository.getCostsByMonths();
+        GenericResponseDto<List<Map<String, Float>>> responseMonth = 
+            new GenericResponseDto("month", data);
+        return responseMonth;
     }
 
 }

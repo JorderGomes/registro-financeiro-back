@@ -19,11 +19,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query(value = "select COALESCE(sum(value), 0) FROM transactions WHERE strftime('%m', datetime(creation_date / 1000, 'unixepoch')) = :month and flux = 'RENDA';", nativeQuery = true)
     public float getMonthlyIncomeBalance(String month);
 
-    @Query(value = "select description, COALESCE(sum(value), 0) as spent from transactions WHERE flux = 'GASTO' group by tag order by spent DESC;", nativeQuery = true)
-    public List<Map<String, Float>> getCostsByTag();
+    @Query(value = "select description as key, COALESCE(sum(value), 0) as value from transactions WHERE flux = 'GASTO' group by tag order by value DESC;", nativeQuery = true)
+    public List<Map<String, Float>> getCostsByTag(); // key, value
 
-    @Query(value = "select strftime('%Y-%m', datetime(creation_date / 1000, 'unixepoch')) AS month, SUM(CASE WHEN flux = 'GASTO' THEN value ELSE 0 END) AS cost from transactions GROUP BY strftime('%Y-%m', datetime(creation_date / 1000, 'unixepoch'));", nativeQuery = true)
-    public List<Map<String, Float>> getCostsByMonths();
+    @Query(value = "select strftime('%Y-%m', datetime(creation_date / 1000, 'unixepoch')) AS key, SUM(CASE WHEN flux = 'GASTO' THEN value ELSE 0 END) AS value from transactions GROUP BY strftime('%Y-%m', datetime(creation_date / 1000, 'unixepoch'));", nativeQuery = true)
+    public List<Map<String, Float>> getCostsByMonths(); // key, value
 
     @Query(value = "SELECT * from  transactions where flux = 'GASTO' and strftime('%Y-%m', datetime(creation_date / 1000, 'unixepoch')) = :year_month ORDER BY value;", nativeQuery = true)
     public List<Transaction> getCostsExpensives(String year_month);

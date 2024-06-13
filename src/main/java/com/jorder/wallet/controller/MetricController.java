@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jorder.wallet.model.Transaction;
+import com.jorder.wallet.model.dto.GenericResponseDto;
 import com.jorder.wallet.model.dto.MonthBalanceDto;
 import com.jorder.wallet.model.dto.PercentualIncomeCostsDto;
 import com.jorder.wallet.useCase.MetricsService;
@@ -47,12 +48,12 @@ public class MetricController {
     
 
     @GetMapping("/costs-by-tag")
-    public ResponseEntity<List<Map<String, Float>>> costsByTag() {
+    public ResponseEntity<GenericResponseDto<List<Map<String, Float>>>> costsByTag() {
         return ResponseEntity.ok(metricsService.calcCostsByTag());
     }
 
     @GetMapping("/costs-by-month")
-    public ResponseEntity<List<Map<String, Float>>> costsByMonth() {
+    public ResponseEntity<GenericResponseDto<List<Map<String, Float>>>> costsByMonth() {
         return ResponseEntity.ok(metricsService.getCostsByMonth());
     }
     
