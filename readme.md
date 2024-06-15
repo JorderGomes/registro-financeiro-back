@@ -1,5 +1,8 @@
 # Registro financeiro
 
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+
 ## Descrição
 
 O projeto mantém o registro simples de renda e gastos pessoais do usuário e mostra algumas métricas relevantes. A api rest foi desenvolvida com Java e Spring, é consumida por um front em Angular. Os dados são salvos em um banco sqlite. Desenvolvi uma api simples para poder integrar com o front construído enquanto estudo Angular.
